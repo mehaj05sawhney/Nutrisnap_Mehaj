@@ -719,6 +719,26 @@ async function loadInsights() {
     document.getElementById("trend-fib-status").textContent = status.fiber;
     document.getElementById("trend-variety-status").textContent = status.variety;
 
+    // Dynamically populate Key Micronutrients based on user's logged meals
+    const calVal = summary.avg_calcium_mg || 0;
+    const ironVal = summary.avg_iron_mg || 0;
+    const vitcVal = summary.avg_vitamin_c_mg || 0;
+
+    const elCalVal = document.getElementById("micro-calcium-val");
+    const elCalBar = document.getElementById("micro-calcium-bar");
+    if (elCalVal) elCalVal.textContent = `${calVal} mg / 1000 mg`;
+    if (elCalBar) elCalBar.style.width = `${Math.min(100, Math.round((calVal / 1000) * 100))}%`;
+
+    const elIronVal = document.getElementById("micro-iron-val");
+    const elIronBar = document.getElementById("micro-iron-bar");
+    if (elIronVal) elIronVal.textContent = `${ironVal} mg / 18 mg`;
+    if (elIronBar) elIronBar.style.width = `${Math.min(100, Math.round((ironVal / 18) * 100))}%`;
+
+    const elVitcVal = document.getElementById("micro-vitc-val");
+    const elVitcBar = document.getElementById("micro-vitc-bar");
+    if (elVitcVal) elVitcVal.textContent = `${vitcVal} mg / 90 mg`;
+    if (elVitcBar) elVitcBar.style.width = `${Math.min(100, Math.round((vitcVal / 90) * 100))}%`;
+
     const chartContainer = document.getElementById("trend-bar-chart");
     if (chartContainer && data.timeline_7d) {
       const maxCal = Math.max(...data.timeline_7d.map(t => t.calories), 2400);

@@ -56,16 +56,26 @@ def calculate_user_trends(user_id: str = "alex") -> Dict[str, Any]:
         if r["meal_type"] == "Breakfast":
             breakfast_fibers.append(r["total_fiber"])
             
-    num_days = max(1, len(daily_stats))
-    
-    avg_calories = sum(d["calories"] for d in daily_stats.values()) / num_days
-    avg_protein = sum(d["protein"] for d in daily_stats.values()) / num_days
-    avg_carbs = sum(d["carbs"] for d in daily_stats.values()) / num_days
-    avg_fat = sum(d["fat"] for d in daily_stats.values()) / num_days
-    avg_fiber = sum(d["fiber"] for d in daily_stats.values()) / num_days
-    avg_calcium = sum(d["calcium"] for d in daily_stats.values()) / num_days
-    avg_iron = sum(d["iron"] for d in daily_stats.values()) / num_days
-    avg_vitamin_c = sum(d["vitamin_c"] for d in daily_stats.values()) / num_days
+    if not rows:
+        num_days = 0
+        avg_calories = 0.0
+        avg_protein = 0.0
+        avg_carbs = 0.0
+        avg_fat = 0.0
+        avg_fiber = 0.0
+        avg_calcium = 0.0
+        avg_iron = 0.0
+        avg_vitamin_c = 0.0
+    else:
+        num_days = max(1, len(daily_stats))
+        avg_calories = sum(d["calories"] for d in daily_stats.values()) / num_days
+        avg_protein = sum(d["protein"] for d in daily_stats.values()) / num_days
+        avg_carbs = sum(d["carbs"] for d in daily_stats.values()) / num_days
+        avg_fat = sum(d["fat"] for d in daily_stats.values()) / num_days
+        avg_fiber = sum(d["fiber"] for d in daily_stats.values()) / num_days
+        avg_calcium = sum(d["calcium"] for d in daily_stats.values()) / num_days
+        avg_iron = sum(d["iron"] for d in daily_stats.values()) / num_days
+        avg_vitamin_c = sum(d["vitamin_c"] for d in daily_stats.values()) / num_days
     
     avg_b_fiber = (sum(breakfast_fibers) / len(breakfast_fibers)) if breakfast_fibers else 3.5
     
