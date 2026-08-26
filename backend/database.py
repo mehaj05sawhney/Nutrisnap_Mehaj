@@ -7,7 +7,7 @@ from typing import List, Optional, Dict, Any
 from .models import UserSettings, MealResponse, LoggedFoodItem, CoachMessage
 from .nutrition import nutrition_repo
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "nutrisnap.db")
+DB_PATH = os.path.join("/tmp", "nutrisnap.db")
 
 def get_connection():
     conn = sqlite3.connect(DB_PATH)

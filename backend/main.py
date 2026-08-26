@@ -46,7 +46,7 @@ app.add_middleware(
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
-UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
+UPLOADS_DIR = os.path.join("/tmp", "nutrisnap_uploads")
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 
 # ----------------- API ROUTES -----------------
