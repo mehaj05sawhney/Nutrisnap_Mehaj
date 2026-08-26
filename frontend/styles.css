@@ -36,6 +36,10 @@
   --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -50,6 +54,11 @@ body.dark-theme {
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+.landing-section {
+  scroll-margin-top: 90px;
 }
 
 /* ==================== APP LAYOUT ==================== */

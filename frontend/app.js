@@ -1508,3 +1508,10 @@ function prevDeckCard() {
   rotateDeckTo(currentDeckIndex - 1);
 }
 
+function scrollToLandingSection(sectionId) {
+  const el = document.getElementById(sectionId);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+

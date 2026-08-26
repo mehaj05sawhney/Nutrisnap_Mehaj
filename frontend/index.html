@@ -784,10 +784,9 @@
 
               <div class="landing-nav-links">
                 <a href="#features"
-                  onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Features</a>
+                  onclick="event.preventDefault(); scrollToLandingSection('features');">Features</a>
                 <a href="#how-it-works"
-                  onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">How It
-                  Works</a>
+                  onclick="event.preventDefault(); scrollToLandingSection('how-it-works');">How It Works</a>
                 <button class="btn-get-started" onclick="navigateTo('dashboard')">Get Started</button>
               </div>
             </nav>
@@ -813,7 +812,7 @@
                 </button>
 
                 <button class="btn-landing-secondary"
-                  onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'});">
+                  onclick="scrollToLandingSection('features');">
                   <span>See How It Works</span>
                 </button>
               </div>
