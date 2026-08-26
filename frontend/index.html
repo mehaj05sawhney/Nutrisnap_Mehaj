@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriSnap AI — AI-Powered Multimodal Nutrition Tracking</title>
+  <meta name="description"
+    content="NutriSnap AI uses computer vision and Gemini intelligence to understand your food, track nutrients effortlessly, and offer additive, non-restrictive coaching.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="dark-theme on-landing">
+
+  <!-- APP CONTAINER -->
+  <div id="app-root" class="app-layout">
+
+    <!-- LEFT SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo" onclick="navigateTo('dashboard')">
+          <div class="brand-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2z"></path>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">NutriSnap</span>
+            <span class="brand-badge">AI Nutrition</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="dashboard" onclick="navigateTo('dashboard')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>Home</span>
+        </button>
+
+        <button class="nav-item" data-view="snap" onclick="openSnapModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+            <circle cx="12" cy="13" r="3"></circle>
+          </svg>
+          <span>Snap Meal</span>
+        </button>
+
+        <button class="nav-item" data-view="history" onclick="navigateTo('history')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>History</span>
+        </button>
+
+        <button class="nav-item" data-view="insights" onclick="navigateTo('insights')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <span>Insights</span>
+        </button>
+
+        <button class="nav-item" data-view="coach" onclick="navigateTo('coach')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+          </svg>
+          <span>Coach</span>
+        </button>
+
+        <button class="nav-item" data-view="settings" onclick="navigateTo('settings')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+            </path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-sidebar-snap" onclick="openSnapModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+            <circle cx="12" cy="13" r="3"></circle>
+          </svg>
+          <span>Snap Your Meal</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content"> <!-- TOP HEADER BAR -->
+      <header class="top-header">
+        <div class="header-user-info" id="header-user-badge">
+          <div class="user-gender-avatar male" id="header-gender-avatar" title="User Profile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="user-meta">
+            <span class="user-greeting" id="header-greeting">Good evening, John</span>
+            <span class="user-subtext" id="header-subdate">Wednesday, 24 June</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <div class="mode-pill" id="demo-mode-pill">
+            <span class="mode-dot"></span>
+            <span class="mode-text" id="mode-status-text">Gemini Ready</span>
+          </div>
+
+          <button class="icon-btn" title="Notifications"
+            onclick="showNotification('You are on track with your protein goals today!')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+            </svg>
+          </button>
+          <button class="icon-btn" title="Settings" onclick="navigateTo('settings')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+              </path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- VIEW CONTAINER -->
+      <div class="view-content" id="view-content">
+
+        <!-- ==================== 1. DASHBOARD VIEW ==================== -->
+        <section id="view-dashboard" class="page-view">
+
+
+          <!-- HERO BANNER (MATCHING REFERENCE) -->
+          <div class="hero-card">
+            <div class="hero-text-col">
+              <h1 class="hero-title">WHAT DID YOU<br>EAT TODAY?</h1>
+              <p class="hero-subtitle">Log your meals to maintain your nutrition goals.</p>
+
+              <div class="hero-actions">
+                <button class="btn-snap-white" onclick="openSnapModal()">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z">
+                    </path>
+                    <circle cx="12" cy="13" r="3"></circle>
+                  </svg>
+                  <span>SNAP YOUR MEAL</span>
+                </button>
+
+                <button class="btn-describe-dark" onclick="openDescribeModal()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  <span>DESCRIBE</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="hero-visual-col" onclick="openSnapModal()">
+              <div class="hero-plate-card">
+                <img src="/assets/paneer_tikka.jpg" alt="Culinary Meal" class="hero-plate-img"
+                  id="hero-profile-plate-img">
+                <div class="scan-corner top-left"></div>
+                <div class="scan-corner top-right"></div>
+                <div class="scan-corner bottom-left"></div>
+                <div class="scan-corner bottom-right"></div>
+                <div class="ai-detect-badge" id="hero-profile-goal-badge">
+                  <span class="pulse-sparkle">✦</span> AI Auto-Detect Active
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DATE SELECTOR (7-DAY ROLLING WEEK FROM CURRENT DATE) -->
+          <div class="date-selector-wrapper">
+            <div class="month-title" id="dashboard-month-title">August, 2026</div>
+            <div class="date-pills-row" id="date-pills-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- NUTRITION OVERVIEW & PATTERN CARDS ROW -->
+          <div class="dashboard-grid-row">
+
+            <!-- CARD A: TODAY'S OVERVIEW -->
+            <div class="overview-card">
+              <div class="overview-header">
+                <h3 class="card-heading">TODAY'S OVERVIEW</h3>
+                <span class="goal-pill" id="overview-goal-badge">Goal: 2400 kcal</span>
+              </div>
+
+              <div class="overview-body">
+                <!-- Circular Calorie Progress -->
+                <div class="circular-progress-box">
+                  <svg class="progress-ring" width="130" height="130">
+                    <circle class="progress-ring-bg" stroke="rgba(255,255,255,0.06)" stroke-width="9" fill="transparent"
+                      r="54" cx="65" cy="65" />
+                    <circle class="progress-ring-fill" id="calorie-progress-circle" stroke="url(#coral-gradient)"
+                      stroke-width="9" stroke-linecap="round" fill="transparent" r="54" cx="65" cy="65" />
+                    <defs>
+                      <linearGradient id="coral-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff7a45" />
+                        <stop offset="100%" stop-color="#ff4500" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div class="progress-label">
+                    <span class="consumed-number" id="calories-consumed-val">0</span>
+                    <span class="consumed-unit">kcal</span>
+                    <span class="consumed-sub">Consumed</span>
+                  </div>
+                </div>
+
+                <!-- Macro Pills Breakdown -->
+                <div class="macro-pills-column">
+
+                  <div class="macro-pill">
+                    <div class="macro-pill-top">
+                      <span class="macro-name">Protein</span>
+                      <span class="macro-icon pro-icon">⚡</span>
+                    </div>
+                    <div class="macro-pill-values">
+                      <span class="macro-cur" id="protein-cur-val">0</span>
+                      <span class="macro-goal" id="protein-goal-val">/ 120g</span>
+                    </div>
+                    <div class="macro-mini-bar">
+                      <div class="macro-bar-fill protein-fill" id="protein-bar-fill" style="width: 0%;"></div>
+                    </div>
+                  </div>
+
+                  <div class="macro-pill">
+                    <div class="macro-pill-top">
+                      <span class="macro-name">Carbs</span>
+                      <span class="macro-icon carbs-icon">🌾</span>
+                    </div>
+                    <div class="macro-pill-values">
+                      <span class="macro-cur" id="carbs-cur-val">0</span>
+                      <span class="macro-goal" id="carbs-goal-val">/ 250g</span>
+                    </div>
+                    <div class="macro-mini-bar">
+                      <div class="macro-bar-fill carbs-fill" id="carbs-bar-fill" style="width: 0%;"></div>
+                    </div>
+                  </div>
+
+                  <div class="macro-pill">
+                    <div class="macro-pill-top">
+                      <span class="macro-name">Fat</span>
+                      <span class="macro-icon fat-icon">💧</span>
+                    </div>
+                    <div class="macro-pill-values">
+                      <span class="macro-cur" id="fat-cur-val">0</span>
+                      <span class="macro-goal" id="fat-goal-val">/ 65g</span>
+                    </div>
+                    <div class="macro-mini-bar">
+                      <div class="macro-bar-fill fat-fill" id="fat-bar-fill" style="width: 0%;"></div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD B: A PATTERN WE NOTICED (MATCHING REFERENCE) -->
+            <div class="pattern-card">
+              <div class="pattern-header">
+                <div class="pattern-icon-bubble">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </div>
+                <span class="pattern-tag">A PATTERN WE NOTICED</span>
+              </div>
+
+              <p class="pattern-text" id="pattern-desc-text">
+                Your recent breakfasts have been relatively low in fibre.
+              </p>
+
+              <div class="pattern-additive-box">
+                <span class="additive-label">TRY ADDING:</span>
+                <div class="additive-chips-row" id="pattern-chips-row">
+                  <span class="additive-chip">Fruit</span>
+                  <span class="additive-chip">Oats</span>
+                  <span class="additive-chip">Dal</span>
+                  <span class="additive-chip">Flaxseed</span>
+                </div>
+              </div>
+
+              <div class="pattern-action-row">
+                <button class="btn-coach-link" onclick="navigateTo('coach')">
+                  <span>Ask AI Coach</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TODAY'S MEALS SECTION -->
+          <div class="meals-section">
+            <div class="section-title-row">
+              <h3 class="card-heading">TODAY'S MEALS</h3>
+              <button class="btn-text-action" onclick="openDescribeModal()">+ Add Item</button>
+            </div>
+
+            <div class="today-meals-grid" id="today-meals-container">
+              <!-- Dynamically populated with Poha, Roti+Dal, etc. -->
+            </div>
+          </div>
+
+          <!-- FOOD OPTIONS CATALOG SECTION (Interactive Options with Live Nutrition Inspection) -->
+          <div class="food-catalog-section">
+            <div class="section-title-row">
+              <div>
+                <h3 class="card-heading">🍽️ FOOD OPTIONS CATALOG</h3>
+                <p class="section-subtext">Click any food option to inspect full macro/micronutrients and add to active
+                  date.</p>
+              </div>
+              <div class="catalog-category-pills" id="catalog-category-pills">
+                <button class="cat-pill active" onclick="filterFoodCatalog('All')">All</button>
+                <button class="cat-pill" onclick="filterFoodCatalog('Protein')">High Protein</button>
+                <button class="cat-pill" onclick="filterFoodCatalog('Grains')">Grains & Carbs</button>
+                <button class="cat-pill" onclick="filterFoodCatalog('Healthy Fats')">Healthy Fats</button>
+                <button class="cat-pill" onclick="filterFoodCatalog('Antioxidant')">Antioxidant & Fruits</button>
+              </div>
+            </div>
+
+            <div class="food-catalog-grid" id="food-catalog-container">
+              <!-- Dynamically populated with rich food option cards -->
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================== 2. MEALS & HISTORY VIEW ==================== -->
+        <section id="view-history" class="page-view">
+          <div class="view-header-row">
+            <h2 class="page-title">Meals & History</h2>
+            <div class="history-filter-tabs" id="history-filter-tabs">
+              <button class="filter-tab active" data-filter="All" onclick="filterHistory('All')">All</button>
+              <button class="filter-tab" data-filter="Breakfast" onclick="filterHistory('Breakfast')">Breakfast</button>
+              <button class="filter-tab" data-filter="Lunch" onclick="filterHistory('Lunch')">Lunch</button>
+              <button class="filter-tab" data-filter="Dinner" onclick="filterHistory('Dinner')">Dinner</button>
+              <button class="filter-tab" data-filter="Snack" onclick="filterHistory('Snack')">Snack</button>
+            </div>
+          </div>
+
+          <div class="history-content-layout">
+            <!-- TODAY SECTION -->
+            <div class="history-group">
+              <h4 class="group-heading">TODAY</h4>
+              <div class="history-grid" id="history-today-grid">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- YESTERDAY SECTION -->
+            <div class="history-group">
+              <h4 class="group-heading">YESTERDAY</h4>
+              <div class="history-list" id="history-yesterday-list">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- PREVIOUS DAYS SECTION -->
+            <div class="history-group">
+              <h4 class="group-heading">EARLIER LOGS</h4>
+              <div class="history-list" id="history-earlier-list">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 3. INSIGHTS & TRENDS VIEW ==================== -->
+        <section id="view-insights" class="page-view">
+          <div class="view-header-row">
+            <div>
+              <h2 class="page-title">Nutrition Intelligence & Trends</h2>
+              <p class="page-subtitle">30-Day passive trend analysis and micronutrient bioavailability.</p>
+            </div>
+          </div>
+
+          <div class="insights-grid">
+
+            <!-- Summary Metric Cards -->
+            <div class="insight-metric-card">
+              <div class="insight-metric-top">
+                <span class="insight-label">30-Day Avg Calories</span>
+                <span class="insight-icon">🔥</span>
+              </div>
+              <div class="insight-number" id="trend-avg-cal">1890 <span class="unit">kcal</span></div>
+              <div class="insight-badge badge-positive" id="trend-cal-status">Consistent Baseline</div>
+            </div>
+
+            <div class="insight-metric-card">
+              <div class="insight-metric-top">
+                <span class="insight-label">Avg Daily Protein</span>
+                <span class="insight-icon">💪</span>
+              </div>
+              <div class="insight-number" id="trend-avg-pro">88.5 <span class="unit">g</span></div>
+              <div class="insight-badge badge-positive" id="trend-pro-status">Optimal Range</div>
+            </div>
+
+            <div class="insight-metric-card">
+              <div class="insight-metric-top">
+                <span class="insight-label">Avg Daily Fiber</span>
+                <span class="insight-icon">🌿</span>
+              </div>
+              <div class="insight-number" id="trend-avg-fib">19.2 <span class="unit">g</span></div>
+              <div class="insight-badge badge-additive" id="trend-fib-status">Additive Growth Opp.</div>
+            </div>
+
+            <div class="insight-metric-card">
+              <div class="insight-metric-top">
+                <span class="insight-label">Food Variety Score</span>
+                <span class="insight-icon">🌈</span>
+              </div>
+              <div class="insight-number" id="trend-variety-num">14 <span class="unit">foods</span></div>
+              <div class="insight-badge badge-positive" id="trend-variety-status">High Diversity</div>
+            </div>
+
+          </div>
+
+          <!-- Micronutrients & 7-Day Trend Chart -->
+          <div class="insights-dual-row">
+            <div class="chart-card">
+              <h3 class="card-heading">7-Day Caloric & Macronutrient Distribution</h3>
+              <div class="bar-chart-container" id="trend-bar-chart">
+                <!-- Dynamically rendered visual bars -->
+              </div>
+            </div>
+
+            <div class="micros-card">
+              <h3 class="card-heading">Key Micronutrients (30-Day Average)</h3>
+              <div class="micro-gauge-list">
+                <div class="micro-gauge-item">
+                  <div class="micro-meta">
+                    <span>Calcium (Bone & Cell Signaling)</span>
+                    <strong id="micro-calcium-val">420 mg / 1000 mg</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-val" id="micro-calcium-bar" style="width: 42%;"></div>
+                  </div>
+                </div>
+
+                <div class="micro-gauge-item">
+                  <div class="micro-meta">
+                    <span>Iron (Oxygen Transport)</span>
+                    <strong id="micro-iron-val">14.2 mg / 18 mg</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-val" id="micro-iron-bar" style="width: 78%;"></div>
+                  </div>
+                </div>
+
+                <div class="micro-gauge-item">
+                  <div class="micro-meta">
+                    <span>Vitamin C (Bioavailability & Immunity)</span>
+                    <strong id="micro-vitc-val">58 mg / 90 mg</strong>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-val" id="micro-vitc-bar" style="width: 64%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 4. AI COACH VIEW ==================== -->
+        <section id="view-coach" class="page-view">
+          <div class="coach-container">
+
+            <div class="coach-header-card">
+              <div class="coach-avatar-bubble">
+                <span class="coach-sparkle-icon">✨</span>
+              </div>
+              <div class="coach-header-info">
+                <h2 class="coach-title">NutriSnap AI Coach</h2>
+                <p class="coach-subtitle">
+                  Personalized, additive nutritional guidance based on your 30-day habits and dietary profile.
+                </p>
+              </div>
+              <div class="coach-header-actions" style="display: flex; align-items: center; gap: 10px;">
+                <div class="coach-tone-badge" id="coach-active-tone-badge">
+                  Scientific & Precise
+                </div>
+                <button class="btn-clear-coach-chat" onclick="clearCoachChat()" title="Clear AI conversation history">
+                  <span>🗑️ Clear Chat</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Chat Message Feed -->
+            <div class="coach-chat-feed" id="coach-chat-feed">
+              <!-- Dynamically populated messages -->
+            </div>
+
+            <!-- Suggested Prompt Chips -->
+            <div class="coach-quick-chips" id="coach-quick-chips">
+              <button class="quick-chip" onclick="askCoachChip('What should I add to my lunch?')">What should I add to
+                my lunch?</button>
+              <button class="quick-chip" onclick="askCoachChip('Why am I feeling hungry in the afternoon?')">Why am I
+                feeling hungry in the afternoon?</button>
+              <button class="quick-chip" onclick="askCoachChip('Give me an easy high-protein breakfast.')">Give me an
+                easy high-protein breakfast</button>
+              <button class="quick-chip" onclick="askCoachChip('How can I increase my fiber?')">How can I increase my
+                fiber?</button>
+            </div>
+
+            <!-- Message Input Area -->
+            <form class="coach-input-bar" id="coach-form" onsubmit="event.preventDefault(); sendCoachMessage(event);">
+              <input type="text" id="coach-user-input" class="coach-input"
+                placeholder="Ask your AI Coach anything (e.g. How to pair carbs for sustained focus?)..."
+                autocomplete="off">
+              <button type="submit" class="btn-coach-send" id="coach-send-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </form>
+
+          </div>
+        </section>
+
+        <!-- ==================== 5. SETTINGS VIEW (EXACT MATCH) ==================== -->
+        <section id="view-settings" class="page-view">
+          <div class="view-header-row">
+            <h2 class="page-title">Settings</h2>
+          </div>
+
+          <div class="settings-layout">
+
+            <div class="settings-left-col">
+
+              <!-- CARD 1: PROFILE & TARGET GOALS (ORANGE BACKGROUND) -->
+              <div class="settings-card-orange">
+                <div class="settings-card-title">
+                  <span class="card-icon">👤</span> Profile & Target Goals
+                </div>
+
+                <div class="profile-edit-body">
+                  <div class="user-gender-avatar-large male" id="settings-gender-avatar">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+
+                  <div class="profile-inputs-row">
+                    <div class="input-field-group">
+                      <label>Full Name</label>
+                      <input type="text" id="setting-full-name" class="settings-input" value="John Doe">
+                    </div>
+
+                    <div class="input-field-group">
+                      <label>Email Address</label>
+                      <input type="email" id="setting-email" class="settings-input" value="john.doe@example.com">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-metrics-grid"
+                  style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px;">
+                  <div class="input-field-group">
+                    <label>Age (Years)</label>
+                    <input type="number" id="setting-age" class="settings-input" value="26" min="14" max="100">
+                  </div>
+                  <div class="input-field-group">
+                    <label>Weight (kg)</label>
+                    <input type="number" id="setting-weight" class="settings-input" value="68.0" step="0.5">
+                  </div>
+                  <div class="input-field-group">
+                    <label>Height (cm)</label>
+                    <input type="number" id="setting-height" class="settings-input" value="174">
+                  </div>
+                </div>
+
+                <div class="profile-metrics-grid"
+                  style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+                  <div class="input-field-group">
+                    <label>Gender (Avatar Color)</label>
+                    <select id="setting-gender" class="settings-select">
+                      <option value="Male" selected>Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Non-Binary / Other</option>
+                    </select>
+                  </div>
+                  <div class="input-field-group">
+                    <label>Target Goal</label>
+                    <select id="setting-target-goal" class="settings-select">
+                      <option value="Muscle Gain" selected>💪 Muscle Gain (High Protein · 120g+)</option>
+                      <option value="Fat Loss / Lean">🔥 Fat Loss / Lean Definition</option>
+                      <option value="Maintenance">⚖️ Maintenance & Longevity</option>
+                      <option value="Endurance & Energy">⚡ Endurance & Performance</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="settings-card-footer" style="margin-top: 16px;">
+                  <button class="btn-white-pill" onclick="saveSettingsForm()">Save & Recalculate Daily Goals</button>
+                </div>
+              </div>
+
+              <!-- CARD 2: DIETARY PREFERENCES (ORANGE BACKGROUND) -->
+              <div class="settings-card-orange">
+                <div class="settings-card-title">
+                  <span class="card-icon">🥗</span> Dietary Preferences
+                </div>
+
+                <div class="pref-items-list">
+                  <div class="pref-toggle-row">
+                    <div class="pref-meta">
+                      <strong>Vegetarian Diet</strong>
+                      <span>Exclude meat and poultry from AI recommendations.</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="setting-is-veg" checked onchange="saveSettingsForm()">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+
+                  <div class="pref-toggle-row">
+                    <div class="pref-meta">
+                      <strong>Gluten-Free</strong>
+                      <span>Flag potential gluten sources in scanned meals.</span>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="setting-is-gf" onchange="saveSettingsForm()">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+
+                  <div class="pref-dropdown-group">
+                    <label>Macro Focus Goal</label>
+                    <select id="setting-macro-goal" class="settings-select" onchange="saveSettingsForm()">
+                      <option value="Balanced Macros (30/40/30)">Balanced Macros (30/40/30)</option>
+                      <option value="High-Protein (40/30/30)">High-Protein (40/30/30)</option>
+                      <option value="Keto / Low-Carb (20/10/70)">Keto / Low-Carb (20/10/70)</option>
+                      <option value="High-Fiber Mediterranean">High-Fiber Mediterranean</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="settings-right-col">
+
+              <!-- CARD 3: AI COACH TONE (DARK CARD) -->
+              <div class="settings-card-dark">
+                <div class="settings-card-title">
+                  <span class="card-icon">🧠</span> AI Coach Tone
+                </div>
+
+                <p class="settings-subtext">
+                  Customize how NutriSnap's AI intelligence communicates your insights.
+                </p>
+
+                <div class="tone-radio-list">
+                  <label class="tone-radio-option">
+                    <input type="radio" name="coach_tone" value="Scientific & Precise" checked
+                      onchange="saveSettingsForm()">
+                    <span class="radio-custom"></span>
+                    <span class="radio-label">Scientific & Precise</span>
+                  </label>
+
+                  <label class="tone-radio-option">
+                    <input type="radio" name="coach_tone" value="Encouraging & Soft" onchange="saveSettingsForm()">
+                    <span class="radio-custom"></span>
+                    <span class="radio-label">Encouraging & Soft</span>
+                  </label>
+
+                  <label class="tone-radio-option">
+                    <input type="radio" name="coach_tone" value="Direct & Strict" onchange="saveSettingsForm()">
+                    <span class="radio-custom"></span>
+                    <span class="radio-label">Direct & Strict</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- CARD 4: DATA & PRIVACY (ORANGE BACKGROUND) -->
+              <div class="settings-card-orange">
+                <div class="settings-card-title">
+                  <span class="card-icon">🔒</span> Data & Privacy
+                </div>
+
+                <div class="privacy-actions-list">
+                  <button class="btn-privacy-action" onclick="exportDataJson()">
+                    <span>Export Nutrition Data</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                  </button>
+
+                  <button class="btn-privacy-action" onclick="clearHistoryData()">
+                    <span>Clear Scan History</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- MEDICAL DISCLAIMER FOOTER (MATCHING REFERENCE) -->
+          <div class="disclaimer-banner">
+            <div class="disclaimer-icon">ⓘ</div>
+            <div class="disclaimer-text">
+              <strong>Disclaimer:</strong> NutriSnap provides general nutrition guidance based on AI analysis of food
+              images and user inputs. It is not a medical diagnosis or treatment service. Consult a healthcare
+              professional before making significant changes to your diet.
+              <div class="disclaimer-links">
+                <a href="#privacy">Privacy Policy</a> · <a href="#terms">Terms of Service</a> · <span>Version
+                  2.0.1</span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================== 6. LANDING PAGE VIEW (MATCHING REFERENCE) ==================== -->
+        <section id="view-landing" class="page-view active">
+
+          <!-- Top Section Wrapper with Top-View Food Table Backdrop (Ends Before Precision Intelligence) -->
+          <div class="landing-top-hero-wrapper">
+
+            <!-- Landing Dedicated Navbar -->
+            <nav class="landing-navbar">
+              <div class="landing-brand" onclick="navigateTo('landing')">
+                <span class="brand-sparkle">✦</span>
+                <span class="landing-brand-name">NutriSnap</span>
+              </div>
+
+              <div class="landing-nav-links">
+                <a href="#features"
+                  onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Features</a>
+                <a href="#how-it-works"
+                  onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">How It
+                  Works</a>
+                <button class="btn-get-started" onclick="navigateTo('dashboard')">Get Started</button>
+              </div>
+            </nav>
+
+            <!-- Landing Hero -->
+            <div class="landing-hero">
+              <div class="hero-watermark-bg">Our Food</div>
+
+              <h1 class="landing-hero-title">
+                AI That Understands<br>
+                <span class="hero-gradient-your">Your</span> <span class="hero-gradient-food">Food</span>
+              </h1>
+
+              <p class="landing-hero-subtitle">
+                Snap a photo. We analyze, track nutrition, and build healthier eating habits daily.<br>
+                Experience the fusion of premium culinary aesthetics and advanced artificial intelligence.
+              </p>
+
+              <div class="landing-hero-buttons">
+                <button class="btn-landing-primary" onclick="navigateTo('dashboard')">
+                  <span>Let's Go</span>
+                  <span class="arrow">→</span>
+                </button>
+
+                <button class="btn-landing-secondary"
+                  onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'});">
+                  <span>See How It Works</span>
+                </button>
+              </div>
+
+              <!-- Visual 4K Food Showcase (Clean 3 Same-Ratio Eye-Catchy Boxed Cards) -->
+              <div class="landing-cards-showcase-row">
+
+                <!-- Card 1: 4K Nourish Bowl -->
+                <div class="food-ratio-card card-1" onclick="navigateTo('dashboard')">
+                  <img src="/assets/landing_food_1.jpg" alt="4K Nourish Bowl" class="ratio-card-img">
+                  <div class="ratio-card-badge-top">
+                    <span class="pulse-dot"></span>
+                    <span>1,640 kcal Logged</span>
+                  </div>
+                  <div class="ratio-card-footer">
+                    <div class="footer-meta">
+                      <strong>Nourish & Balance</strong>
+                      <span>24g Protein · 14g Fiber</span>
+                    </div>
+                    <span class="footer-go-btn">→</span>
+                  </div>
+                </div>
+
+                <!-- Card 2: Center 4K Fresh Fruit Highlight -->
+                <div class="food-ratio-card card-2 center-highlight" onclick="navigateTo('dashboard')">
+                  <img src="/assets/landing_food_2.jpg" alt="4K Antioxidant Fruit Plate" class="ratio-card-img">
+                  <div class="ratio-center-banner">
+                    <span class="sparkle-gold">✦</span>
+                    <h3>AI THAT UNDERSTANDS</h3>
+                    <p>Your Food & Bio-habits</p>
+                  </div>
+                  <div class="ratio-bottom-pill">
+                    <span class="pill-sparkle">⚡</span>
+                    <strong>1,190 kcal left</strong>
+                    <span class="pill-badge-mini">65%</span>
+                  </div>
+                </div>
+
+                <!-- Card 3: 4K Sizzling Gourmet Skillet -->
+                <div class="food-ratio-card card-3"
+                  onclick="navigateTo('dashboard'); setTimeout(() => openSnapModal(), 300);">
+                  <img src="/assets/landing_food_3.jpg" alt="4K Sizzling Gourmet Skillet" class="ratio-card-img">
+                  <div class="ratio-card-badge-top scanner-tag">
+                    <span class="pulse-dot green"></span>
+                    <span>AI Vision Active</span>
+                  </div>
+
+                  <div class="ratio-hud-frame">
+                    <div class="hud-corner-mini tl"></div>
+                    <div class="hud-corner-mini tr"></div>
+                    <div class="hud-corner-mini bl"></div>
+                    <div class="hud-corner-mini br"></div>
+                    <span class="hud-confidence-tag">99.4% Match</span>
+                  </div>
+
+                  <div class="ratio-card-footer">
+                    <div class="footer-meta">
+                      <strong>Sizzling Skillet</strong>
+                      <span>36g Protein · Iron Rich</span>
+                    </div>
+                    <span class="footer-go-btn">→</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Section: Precision Intelligence (Turn-Wise Rotating Motion) -->
+          <div class="landing-section" id="features">
+            <h2 class="landing-sec-heading">Precision Intelligence</h2>
+            <p class="landing-sec-sub">
+              Our advanced vision models recognize thousands of ingredients, instantly providing accurate nutritional
+              breakdowns without manual entry.
+            </p>
+
+            <!-- 3D Rotating Stack Carousel Container -->
+            <div class="rotating-deck-container" id="intelligence-deck">
+              <div class="deck-cards-wrapper">
+
+                <!-- Card 0: Instant Recognition -->
+                <div class="deck-card card-0 active" onclick="rotateDeckTo(0)">
+                  <div class="feature-icon-circle">📷</div>
+                  <h3 class="feature-card-title">Instant Recognition</h3>
+                  <p class="feature-card-desc">
+                    Just point your camera. Our AI identifies complex meals and individual ingredients with unparalleled
+                    accuracy in milliseconds.
+                  </p>
+                  <div class="feature-card-meta">
+                    <span class="feature-pill">✦ Multimodal Gemini Vision</span>
+                    <span class="feature-stat">99.4% Precision</span>
+                  </div>
+                </div>
+
+                <!-- Card 1: Deep Nutritional Analysis -->
+                <div class="deck-card card-1 next" onclick="rotateDeckTo(1)">
+                  <div class="feature-icon-circle">📋</div>
+                  <h3 class="feature-card-title">Deep Nutritional Analysis</h3>
+                  <p class="feature-card-desc">
+                    Beyond calories. Get detailed macronutrient splits, vitamins, and personalized insights based on
+                    your specific health goals.
+                  </p>
+                  <div class="feature-card-meta">
+                    <span class="feature-pill">✦ 12+ Micronutrients Tracked</span>
+                    <span class="feature-stat">Full Bioavailability</span>
+                  </div>
+                </div>
+
+                <!-- Card 2: Adaptive Habits -->
+                <div class="deck-card card-2 prev" onclick="rotateDeckTo(2)">
+                  <div class="feature-icon-circle">🎯</div>
+                  <h3 class="feature-card-title">Adaptive Habits</h3>
+                  <p class="feature-card-desc">
+                    The AI learns your eating patterns over time, gently suggesting healthier alternatives and guiding
+                    you towards sustained well-being.
+                  </p>
+                  <div class="feature-card-meta">
+                    <span class="feature-pill">✦ Non-Restrictive Guidance</span>
+                    <span class="feature-stat">30-Day Trend Engine</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Carousel Controls -->
+              <div class="deck-controls">
+                <button class="deck-arrow-btn" onclick="prevDeckCard()" title="Previous Card">←</button>
+                <div class="deck-dots">
+                  <span class="deck-dot active" onclick="rotateDeckTo(0)"></span>
+                  <span class="deck-dot" onclick="rotateDeckTo(1)"></span>
+                  <span class="deck-dot" onclick="rotateDeckTo(2)"></span>
+                </div>
+                <button class="deck-arrow-btn" onclick="nextDeckCard()" title="Next Card">→</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Seamless Integration (Improved High-Fidelity) -->
+          <div class="landing-section" id="how-it-works">
+            <h2 class="landing-sec-heading">Seamless Integration</h2>
+            <p class="landing-sec-sub">
+              Experience seamless harmony between real-time computer vision and daily nutritional progression.
+            </p>
+
+            <div class="seamless-grid">
+
+              <!-- LEFT: Real-time Vision Processing Box -->
+              <div class="seamless-vision-card"
+                onclick="navigateTo('dashboard'); setTimeout(() => openSnapModal(), 300);">
+                <img src="/assets/salmon.jpg" alt="Real-time Vision" class="seamless-img">
+                <div class="seamless-scanner-laser"></div>
+
+                <!-- Bounding Box 1: Salmon -->
+                <div class="seamless-bbox bbox-main">
+                  <div class="corner tl"></div>
+                  <div class="corner tr"></div>
+                  <div class="corner bl"></div>
+                  <div class="corner br"></div>
+                  <div class="bbox-tag">
+                    <span class="pulse-dot green"></span>
+                    <strong>Grilled Salmon Fillet</strong>
+                    <span class="conf">98% Match</span>
+                  </div>
+                </div>
+
+                <!-- Bounding Box 2: Tomatoes -->
+                <div class="seamless-bbox bbox-side">
+                  <div class="corner tl"></div>
+                  <div class="corner br"></div>
+                  <div class="bbox-tag mini">
+                    <span>Roasted Cherry Tomatoes</span>
+                  </div>
+                </div>
+
+                <!-- Floating Live Telemetry Chips -->
+                <div class="seamless-telemetry-row">
+                  <span class="telemetry-pill">🔥 420 kcal</span>
+                  <span class="telemetry-pill">⚡ 36g Protein</span>
+                  <span class="telemetry-pill">🌿 3.5g Fiber</span>
+                </div>
+
+                <div class="seamless-card-footer">
+                  <div class="footer-left">
+                    <span class="live-pulse-dot"></span>
+                    <strong>Real-time Vision Processing</strong>
+                  </div>
+                  <span class="footer-action-chip">Tap to Try ⚡</span>
+                </div>
+              </div>
+
+              <!-- RIGHT: Daily Goal Progress Card -->
+              <div class="seamless-progress-card">
+                <div class="progress-card-top">
+                  <div class="progress-title-meta">
+                    <span class="seamless-label">Daily Goal Progress</span>
+                    <h3 class="progress-calorie-stat">1,190 <span class="sub">/ 2000 kcal</span></h3>
+                    <span class="progress-remaining-tag">810 kcal remaining</span>
+                  </div>
+
+                  <div class="seamless-progress-circle">
+                    <svg width="116" height="116">
+                      <circle cx="58" cy="58" r="48" stroke="rgba(255,255,255,0.12)" stroke-width="9" fill="none" />
+                      <circle cx="58" cy="58" r="48" stroke="#ffffff" stroke-width="9" stroke-dasharray="301.6"
+                        stroke-dashoffset="105.5" stroke-linecap="round" fill="none" />
+                    </svg>
+                    <div class="seamless-circle-text">
+                      <span class="circle-lightning">⚡</span>
+                      <strong>65%</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Macro Progress Mini-bars -->
+                <div class="seamless-macro-bars">
+                  <div class="mini-macro-item">
+                    <div class="mini-macro-header">
+                      <span>Protein (Muscle & Satiety)</span>
+                      <strong>72g / 110g</strong>
+                    </div>
+                    <div class="mini-track">
+                      <div class="mini-fill" style="width: 65%;"></div>
+                    </div>
+                  </div>
+
+                  <div class="mini-macro-item">
+                    <div class="mini-macro-header">
+                      <span>Carbohydrates (Energy)</span>
+                      <strong>145g / 220g</strong>
+                    </div>
+                    <div class="mini-track">
+                      <div class="mini-fill" style="width: 66%;"></div>
+                    </div>
+                  </div>
+
+                  <div class="mini-macro-item">
+                    <div class="mini-macro-header">
+                      <span>Dietary Fiber (Digestion)</span>
+                      <strong>24g / 35g</strong>
+                    </div>
+                    <div class="mini-track">
+                      <div class="mini-fill" style="width: 68%;"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="seamless-card-action-row">
+                  <button class="btn-seamless-action" onclick="navigateTo('dashboard')">
+                    <span>Enter Live Dashboard</span>
+                    <span class="arrow">→</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Landing Footer -->
+          <footer class="landing-footer">
+            <div class="landing-brand-center">
+              <span class="sparkle">✦</span> NutriSnap
+            </div>
+            <p class="footer-tagline">AI-powered nutrition tracking for a healthier you.</p>
+            <div class="footer-links">
+
+            </div>
+          </footer>
+
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. SNAP MEAL & CAMERA VISION MODAL -->
+  <div class="modal-backdrop" id="snap-modal">
+    <div class="modal-window snap-modal-window">
+
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">📷</span>
+          <div>
+            <h3 class="modal-title">Snap Food Scanner</h3>
+            <p class="modal-subtitle">Gemini Vision Multimodal Ingredient Recognition</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeSnapModal()">✕</button>
+      </div>
+
+      <div class="snap-modal-body">
+
+        <!-- Viewfinder / Camera Simulation -->
+        <div class="viewfinder-box" id="snap-viewfinder">
+          <img src="/assets/salmon.jpg" id="viewfinder-image" alt="Scanned Food" class="viewfinder-img">
+
+          <div class="hud-corners">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            <div class="corner bl"></div>
+            <div class="corner br"></div>
+          </div>
+
+          <div class="scanning-laser" id="scanning-laser"></div>
+
+          <div class="hud-status" id="hud-status-badge">
+            <span class="pulse-dot green"></span> AI Auto-Detect Ready
+          </div>
+        </div>
+
+        <!-- Sample Dish Selector / Upload Options -->
+        <div class="sample-picker-section">
+          <span class="sample-picker-title">Or test with preset culinary samples:</span>
+          <div class="sample-pill-row">
+            <button class="sample-pill active" onclick="pickSampleDish('salmon.jpg')">🐟 Salmon & Veg</button>
+            <button class="sample-pill" onclick="pickSampleDish('poha.jpg')">🥣 Poha</button>
+            <button class="sample-pill" onclick="pickSampleDish('paneer_tikka.jpg')">🧀 Paneer Tikka</button>
+            <button class="sample-pill" onclick="pickSampleDish('chicken_curry.jpg')">🍗 Chicken Curry</button>
+            <button class="sample-pill" onclick="pickSampleDish('fruit_bowl.jpg')">🍓 Fruit Bowl</button>
+            <button class="sample-pill" onclick="pickSampleDish('dosa.jpg')">🥞 Dosa</button>
+          </div>
+        </div>
+
+        <!-- File Upload Input -->
+        <div class="upload-trigger-row">
+          <label class="btn-file-upload">
+            <input type="file" id="image-file-input" accept="image/*" onchange="handleImageFileSelect(event)">
+            <span>📁 Upload Your Own Photo</span>
+          </label>
+        </div>
+
+        <!-- Real-time Scan Results Preview -->
+        <div class="scan-results-preview" id="scan-results-box" style="display: none;">
+          <div class="results-header">
+            <span class="results-title" id="scan-detected-title">Identified Dish</span>
+            <span class="results-cal" id="scan-detected-cals">420 kcal</span>
+          </div>
+          <div class="detected-chips-row" id="scan-detected-chips">
+            <!-- Detected items -->
+          </div>
+          <div class="additive-suggestion-box" id="scan-additive-suggestion">
+            <!-- Additive recommendation -->
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeSnapModal()">Cancel</button>
+        <button class="btn-scan-primary" id="btn-run-scan" onclick="triggerFoodScan()">
+          <span>⚡ Scan with Gemini Vision</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2. DESCRIBE MEAL (NATURAL LANGUAGE) MODAL -->
+  <div class="modal-backdrop" id="describe-modal">
+    <div class="modal-window describe-modal-window">
+
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">✍️</span>
+          <div>
+            <h3 class="modal-title">Describe What You Ate</h3>
+            <p class="modal-subtitle">Natural Language Parsing & Automatic Database Matching</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeDescribeModal()">✕</button>
+      </div>
+
+      <div class="describe-modal-body">
+
+        <div class="meal-type-selector">
+          <label class="type-pill"><input type="radio" name="describe_meal_type" value="Breakfast">
+            <span>Breakfast</span></label>
+          <label class="type-pill"><input type="radio" name="describe_meal_type" value="Lunch" checked>
+            <span>Lunch</span></label>
+          <label class="type-pill"><input type="radio" name="describe_meal_type" value="Dinner">
+            <span>Dinner</span></label>
+          <label class="type-pill"><input type="radio" name="describe_meal_type" value="Snack">
+            <span>Snack</span></label>
+        </div>
+
+        <div class="textarea-wrapper">
+          <textarea id="describe-text-input" class="describe-textarea" rows="3"
+            placeholder="e.g. 'I had two rotis and dal for lunch' or 'Ate poha with a cup of chai'"></textarea>
+          <button class="voice-sim-btn" title="Simulate Voice Input"
+            onclick="insertSampleDescribe('Had two rotis with dal for lunch')">
+            🎤 Fill Example
+          </button>
+        </div>
+
+        <div class="sample-prompts-row">
+          <span class="quick-title">Quick Examples:</span>
+          <button class="prompt-chip" onclick="insertSampleDescribe('I had two rotis and dal for lunch')">2 Rotis +
+            Dal</button>
+          <button class="prompt-chip"
+            onclick="insertSampleDescribe('Had paneer tikka with steamed rice and salad')">Paneer + Rice</button>
+          <button class="prompt-chip"
+            onclick="insertSampleDescribe('Ate 2 boiled eggs and a fruit bowl for breakfast')">Eggs + Fruits</button>
+          <button class="prompt-chip" onclick="insertSampleDescribe('Had kanda poha with tea')">Poha</button>
+        </div>
+
+        <!-- Live Parsed Result Display -->
+        <div class="nlp-result-box" id="nlp-result-box" style="display: none;">
+          <div class="nlp-title" id="nlp-result-title">Parsed Nutrition Summary</div>
+          <div class="nlp-items-list" id="nlp-items-list"></div>
+          <div class="nlp-additive-notice" id="nlp-additive-notice"></div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeDescribeModal()">Cancel</button>
+        <button class="btn-scan-primary" id="btn-parse-nlp" onclick="triggerNaturalLanguageParse()">
+          <span>Analyze & Log Meal</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3. DEEP NUTRITION REPORT MODAL -->
+  <div class="modal-backdrop" id="report-modal">
+    <div class="modal-window report-modal-window">
+
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">📊</span>
+          <div>
+            <h3 class="modal-title" id="report-meal-title">Nutrition Report</h3>
+            <p class="modal-subtitle" id="report-meal-time">Detailed Macronutrient & Micronutrient Breakdown</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeReportModal()">✕</button>
+      </div>
+
+      <div class="report-modal-body" id="report-modal-content">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeReportModal()">Close</button>
+        <button class="btn-scan-primary" onclick="openCoachWithContext()">
+          <span>Ask AI Coach About This Meal ✦</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. INTERACTIVE FOOD OPTIONS NUTRITION INSPECTOR MODAL -->
+  <div class="modal-backdrop" id="food-inspector-modal">
+    <div class="modal-window inspector-modal-window">
+
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">🥗</span>
+          <div>
+            <h3 class="modal-title" id="inspector-food-name">Food Nutrition Profile</h3>
+            <p class="modal-subtitle" id="inspector-food-sub">Inspect nutritional density & log with one click</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeFoodInspector()">✕</button>
+      </div>
+
+      <div class="inspector-modal-body">
+
+        <!-- Header Showcase Card -->
+        <div class="inspector-hero-card">
+          <img src="/assets/paneer_tikka.jpg" id="inspector-food-img" class="inspector-food-photo" alt="Food Photo">
+          <div class="inspector-hero-meta">
+            <div class="inspector-serving-badge" id="inspector-serving-badge">1 Serving (150g)</div>
+            <div class="inspector-cal-stat">
+              <span class="cal-big" id="inspector-calories">280</span>
+              <span class="cal-unit">kcal</span>
+            </div>
+            <p class="inspector-desc-text" id="inspector-food-desc">High-protein tandoori spiced cottage cheese cubes.
+            </p>
+          </div>
+        </div>
+
+        <!-- Macronutrient Grid -->
+        <div class="inspector-macros-section">
+          <h4 class="inspector-section-label">Macronutrient Profile</h4>
+          <div class="inspector-macro-grid">
+            <div class="inspector-macro-card protein-card">
+              <span class="mac-icon">⚡</span>
+              <span class="mac-label">Protein</span>
+              <strong class="mac-val" id="inspector-protein">18g</strong>
+            </div>
+            <div class="inspector-macro-card carbs-card">
+              <span class="mac-icon">🌾</span>
+              <span class="mac-label">Carbs</span>
+              <strong class="mac-val" id="inspector-carbs">12g</strong>
+            </div>
+            <div class="inspector-macro-card fat-card">
+              <span class="mac-icon">💧</span>
+              <span class="mac-label">Fat</span>
+              <strong class="mac-val" id="inspector-fat">14g</strong>
+            </div>
+            <div class="inspector-macro-card fiber-card">
+              <span class="mac-icon">🌿</span>
+              <span class="mac-label">Fiber</span>
+              <strong class="mac-val" id="inspector-fiber">3.5g</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Micronutrients Section -->
+        <div class="inspector-micros-section">
+          <h4 class="inspector-section-label">Micronutrients & Minerals</h4>
+          <div class="inspector-micro-row">
+            <div class="micro-badge"><span class="micro-name">Calcium</span><strong id="inspector-calcium">420
+                mg</strong></div>
+            <div class="micro-badge"><span class="micro-name">Iron</span><strong id="inspector-iron">2.4 mg</strong>
+            </div>
+            <div class="micro-badge"><span class="micro-name">Vitamin C</span><strong id="inspector-vit-c">8 mg</strong>
+            </div>
+            <div class="micro-badge"><span class="micro-name">Sodium</span><strong id="inspector-sodium">380 mg</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portion & Meal Type Selector -->
+        <div class="inspector-controls-section">
+          <div class="portion-stepper-wrap">
+            <span class="ctrl-label">Quantity / Servings:</span>
+            <div class="stepper-box">
+              <button class="btn-stepper" onclick="stepInspectorQty(-0.5)">−</button>
+              <span class="stepper-display" id="inspector-qty-val">1.0x</span>
+              <button class="btn-stepper" onclick="stepInspectorQty(0.5)">+</button>
+            </div>
+          </div>
+
+          <div class="meal-type-stepper-wrap">
+            <span class="ctrl-label">Add to Meal:</span>
+            <div class="inspector-type-pills">
+              <label class="insp-type"><input type="radio" name="insp_meal_type"
+                  value="Breakfast"><span>Breakfast</span></label>
+              <label class="insp-type"><input type="radio" name="insp_meal_type" value="Lunch"
+                  checked><span>Lunch</span></label>
+              <label class="insp-type"><input type="radio" name="insp_meal_type"
+                  value="Dinner"><span>Dinner</span></label>
+              <label class="insp-type"><input type="radio" name="insp_meal_type"
+                  value="Snack"><span>Snack</span></label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeFoodInspector()">Cancel</button>
+        <button class="btn-scan-primary" id="btn-inspector-log" onclick="logInspectedFood()">
+          <span>⚡ Log to Daily Diary</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5. USER PROFILE & NUTRITION GOAL CALCULATOR MODAL -->
+  <div class="modal-backdrop" id="profile-calculator-modal">
+    <div class="modal-window profile-modal-window">
+
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">👤</span>
+          <div>
+            <h3 class="modal-title">Personal Profile & Nutrition Goals</h3>
+            <p class="modal-subtitle">AI-calculated macros and calories based on your body metrics and targets</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeProfileModal()">✕</button>
+      </div>
+
+      <div class="profile-modal-body">
+
+        <form id="profile-calculator-form" onsubmit="event.preventDefault(); saveUserProfile();">
+
+          <!-- Basic Info Grid -->
+          <div class="profile-form-grid">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" id="prof-name" class="form-input" value="Alex Sterling" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="prof-email" class="form-input" value="alex.sterling@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Age (Years)</label>
+              <input type="number" id="prof-age" class="form-input" min="14" max="100" value="26"
+                oninput="triggerLivePlanCalc()" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Body Weight (kg)</label>
+              <input type="number" id="prof-weight" class="form-input" min="30" max="250" step="0.5" value="68.0"
+                oninput="triggerLivePlanCalc()" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Height (cm)</label>
+              <input type="number" id="prof-height" class="form-input" min="100" max="250" value="174"
+                oninput="triggerLivePlanCalc()" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <select id="prof-gender" class="form-input" onchange="triggerLivePlanCalc()">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other / Non-Binary</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Target Goal & Activity Level -->
+          <div class="profile-goals-grid">
+            <div class="form-group">
+              <label class="form-label">Primary Target Goal</label>
+              <select id="prof-goal" class="form-input highlight-select" onchange="triggerLivePlanCalc()">
+                <option value="Muscle Gain" selected>💪 Muscle Gain & Hypertrophy (High Protein + Surplus)</option>
+                <option value="Fat Loss / Lean">🔥 Fat Loss / Lean Definition (Caloric Deficit + High Protein)</option>
+                <option value="Maintenance">⚖️ Maintenance & Longevity (Energy Balance)</option>
+                <option value="Endurance & Energy">⚡ Endurance & Athletic Performance (Carb-Fueled)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Daily Activity Level</label>
+              <select id="prof-activity" class="form-input" onchange="triggerLivePlanCalc()">
+                <option value="Sedentary">Sedentary (Desk Job, Light Movement - 1.2x)</option>
+                <option value="Moderate" selected>Moderate (3-5 workouts/week - 1.55x)</option>
+                <option value="High / Athlete">High / Athletic (Heavy Training / Daily Sports - 1.75x)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- AI Recommended Plan Card (Live Updates) -->
+          <div class="ai-suggested-plan-box" id="ai-suggested-plan-box">
+            <div class="plan-header">
+              <span class="plan-sparkle">✦</span>
+              <div>
+                <strong class="plan-title">AI Suggested Daily Nutrition Plan</strong>
+                <span class="plan-meta-sub" id="plan-bmr-tdee">BMR: 1,650 kcal · TDEE: 2,550 kcal</span>
+              </div>
+            </div>
+
+            <div class="plan-metrics-row">
+              <div class="plan-stat-card primary">
+                <span class="p-lbl">Daily Calories</span>
+                <strong class="p-val" id="plan-cal-val">2,400 <span class="p-unit">kcal</span></strong>
+              </div>
+
+              <div class="plan-stat-card">
+                <span class="p-lbl">Protein Target</span>
+                <strong class="p-val" id="plan-pro-val">120g <span class="p-sub"
+                    id="plan-pro-kg">(1.8g/kg)</span></strong>
+              </div>
+
+              <div class="plan-stat-card">
+                <span class="p-lbl">Carbs Target</span>
+                <strong class="p-val" id="plan-carbs-val">250g</strong>
+              </div>
+
+              <div class="plan-stat-card">
+                <span class="p-lbl">Healthy Fats</span>
+                <strong class="p-val" id="plan-fat-val">65g</strong>
+              </div>
+
+              <div class="plan-stat-card">
+                <span class="p-lbl">Dietary Fiber</span>
+                <strong class="p-val" id="plan-fiber-val" style="color: #10b981;">35g</strong>
+              </div>
+            </div>
+
+            <p class="plan-rationale-text" id="plan-rationale-text">
+              Caloric surplus (+350 kcal) with 1.8g/kg protein to maximize muscle protein synthesis and lean tissue
+              growth without excess fat accumulation.
+            </p>
+
+            <div class="plan-micros-preview">
+              <span class="micro-tag">🦴 Calcium: 1,000 mg</span>
+              <span class="micro-tag">🩸 Iron: 14 mg</span>
+              <span class="micro-tag">🍊 Vit C: 90 mg</span>
+              <span class="micro-tag">☀️ Vit D: 15 mcg</span>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="padding: 16px 0 0; margin-top: 20px;">
+            <button type="button" class="btn-cancel" onclick="closeProfileModal()">Cancel</button>
+            <button type="submit" class="btn-scan-primary" id="btn-save-profile">
+              <span>⚡ Save Profile & Apply Daily Goals</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
