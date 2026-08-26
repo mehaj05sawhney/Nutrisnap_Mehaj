@@ -613,87 +613,143 @@ async function loadHistory(filterCategory = "All") {
     const res = await fetch(url);
     const meals = await res.json();
 
-    const todayMeals = meals.filter(m => m.meal_date === "2026-06-24");
-    const yesterdayMeals = meals.filter(m => m.meal_date === "2026-06-23");
-    const earlierMeals = meals.filter(m => m.meal_date < "2026-06-23");
+    const todayStr = new Date().toISOString().split('T')[0];
+    const yDate = new Date();
+    yDate.setDate(yDate.getDate() - 1);
+    const yesterdayStr = yDate.toISOString().split('T')[0];
+
+    const todayMeals = meals.filter(m => m.meal_date === todayStr || m.meal_date === currentSelectedDate);
+    const yesterdayMeals = meals.filter(m => m.meal_date === yesterdayStr && m.meal_date !== currentSelectedDate);
+    const earlierMeals = meals.filter(m => m.meal_date !== todayStr && m.meal_date !== yesterdayStr && m.meal_date !== currentSelectedDate);
 
     const todayGrid = document.getElementById("history-today-grid");
     if (todayGrid) {
-      todayGrid.innerHTML = todayMeals.map(m => `
-        <div class="meal-card" onclick="openNutritionReport(${m.id})">
-          <div class="meal-thumb-wrap" style="width: 110px; height: 110px;">
-            <img src="${m.image_url || '/assets/roti.jpg'}" alt="${m.title}" class="meal-thumb-img" onerror="this.src='/assets/roti.jpg'">
-          </div>
-          <div class="meal-card-details">
-            <div class="meal-card-header">
-              <span class="meal-type-badge">${m.meal_type}</span>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span class="meal-time-text">${m.meal_time}</span>
-                <button class="btn-delete-meal" title="Remove" onclick="deleteMealItem(${m.id}, event)">🗑️</button>
-              </div>
-            </div>
-            <h4 class="meal-title-text">${m.title}</h4>
-            <div class="meal-metrics-row" style="margin-top: 14px;">
-              <div class="meal-metric-group">
-                <span class="tag-pill">${Math.round(m.total_calories)} kcal</span>
-                <span class="tag-pill" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">${m.total_protein}g Protein</span>
-              </div>
-              <div class="meal-arrow-btn">→</div>
+      if (todayMeals.length === 0) {
+        todayGrid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 36px 20px; background: var(--bg-card); border-radius: var(--radius-xl); border: 1px dashed var(--border-subtle); color: var(--text-muted);">
+            <p style="font-size: 1rem; color: #fff; font-weight: 700;">No meals logged for today yet</p>
+            <p style="font-size: 0.85rem; margin-top: 4px;">Choose an item from the dashboard catalog, snap a photo, or describe your meal.</p>
+            <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px;">
+              <button class="btn-landing-primary" style="padding: 8px 18px; font-size: 0.85rem;" onclick="navigateTo('dashboard')">🍱 Food Options Catalog</button>
+              <button class="btn-snap-white" onclick="openDescribeModal()">✍️ Describe Meal</button>
             </div>
           </div>
-        </div>
-      `).join("");
+        `;
+      } else {
+        todayGrid.innerHTML = todayMeals.map(m => `
+          <div class="meal-card" onclick="openNutritionReport(${m.id})">
+            <div class="meal-thumb-wrap" style="width: 110px; height: 110px;">
+              <img src="${m.image_url || '/assets/roti.jpg'}" alt="${m.title}" class="meal-thumb-img" onerror="this.src='/assets/roti.jpg'">
+            </div>
+            <div class="meal-card-details">
+              <div class="meal-card-header">
+                <span class="meal-type-badge">${m.meal_type}</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="meal-time-text">${m.meal_time}</span>
+                  <button class="btn-delete-meal" title="Remove" onclick="deleteMealItem(${m.id}, event)">🗑️</button>
+                </div>
+              </div>
+              <h4 class="meal-title-text">${m.title}</h4>
+              <div class="meal-metrics-row" style="margin-top: 14px;">
+                <div class="meal-metric-group">
+                  <span class="tag-pill">${Math.round(m.total_calories)} kcal</span>
+                  <span class="tag-pill" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">${m.total_protein}g Protein</span>
+                </div>
+                <div class="meal-arrow-btn">→</div>
+              </div>
+            </div>
+          </div>
+        `).join("");
+      }
     }
 
     const yesterdayList = document.getElementById("history-yesterday-list");
     if (yesterdayList) {
-      yesterdayList.innerHTML = yesterdayMeals.map(m => `
-        <div class="history-list-item" onclick="openNutritionReport(${m.id})">
-          <div class="list-item-left">
-            <img src="${m.image_url || '/assets/roti.jpg'}" alt="${m.title}" class="list-item-thumb" onerror="this.src='/assets/roti.jpg'">
-            <div>
-              <div class="list-item-title">${m.title}</div>
-              <div class="list-item-tags">
-                <span class="tag-pill">${m.meal_type}</span>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">${m.description || ''}</span>
+      if (yesterdayMeals.length === 0) {
+        yesterdayList.innerHTML = `
+          <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.88rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed var(--border-subtle);">
+            No meals logged for yesterday
+          </div>
+        `;
+      } else {
+        yesterdayList.innerHTML = yesterdayMeals.map(m => `
+          <div class="history-list-item" onclick="openNutritionReport(${m.id})">
+            <div class="list-item-left">
+              <img src="${m.image_url || '/assets/roti.jpg'}" alt="${m.title}" class="list-item-thumb" onerror="this.src='/assets/roti.jpg'">
+              <div>
+                <div class="list-item-title">${m.title}</div>
+                <div class="list-item-tags">
+                  <span class="tag-pill">${m.meal_type}</span>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">${m.description || ''}</span>
+                </div>
               </div>
             </div>
+            <div class="list-item-right">
+              <span class="item-stat-badge">${Math.round(m.total_calories)} kcal</span>
+              <span class="item-stat-badge" style="color: #60a5fa;">${m.total_protein}g Pro</span>
+              <span class="item-time-stamp">${m.meal_time}</span>
+              <button class="btn-delete-meal" onclick="deleteMealItem(${m.id}, event)">🗑️</button>
+            </div>
           </div>
-          <div class="list-item-right">
-            <span class="item-stat-badge">${Math.round(m.total_calories)} kcal</span>
-            <span class="item-stat-badge" style="color: #60a5fa;">${m.total_protein}g Pro</span>
-            <span class="item-time-stamp">${m.meal_time}</span>
-            <button class="btn-delete-meal" onclick="deleteMealItem(${m.id}, event)">🗑️</button>
-          </div>
-        </div>
-      `).join("");
+        `).join("");
+      }
     }
 
     const earlierList = document.getElementById("history-earlier-list");
     if (earlierList) {
-      earlierList.innerHTML = earlierMeals.slice(0, 10).map(m => `
-        <div class="history-list-item" onclick="openNutritionReport(${m.id})">
-          <div class="list-item-left">
-            <img src="${m.image_url || '/assets/roti.jpg'}" alt="${m.title}" class="list-item-thumb" onerror="this.src='/assets/roti.jpg'">
-            <div>
-              <div class="list-item-title">${m.title}</div>
-              <div class="list-item-tags">
-                <span class="tag-pill">${m.meal_type}</span>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">${m.meal_date}</span>
+      if (earlierMeals.length === 0) {
+        earlierList.innerHTML = `
+          <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.88rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed var(--border-subtle);">
+            No earlier meal history
+          </div>
+        `;
+      } else {
+        earlierList.innerHTML = earlierMeals.slice(0, 15).map(m => `
+          <div class="history-list-item" onclick="openNutritionReport(${m.id})">
+            <div class="list-item-left">
+              <img src="${m.image_url || '/assets/roti.jpg'}" alt="${m.title}" class="list-item-thumb" onerror="this.src='/assets/roti.jpg'">
+              <div>
+                <div class="list-item-title">${m.title}</div>
+                <div class="list-item-tags">
+                  <span class="tag-pill">${m.meal_type}</span>
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">${m.meal_date} · ${m.meal_time}</span>
+                </div>
               </div>
             </div>
+            <div class="list-item-right">
+              <span class="item-stat-badge">${Math.round(m.total_calories)} kcal</span>
+              <span class="item-stat-badge" style="color: #60a5fa;">${m.total_protein}g Pro</span>
+              <button class="btn-delete-meal" onclick="deleteMealItem(${m.id}, event)">🗑️</button>
+            </div>
           </div>
-          <div class="list-item-right">
-            <span class="item-stat-badge">${Math.round(m.total_calories)} kcal</span>
-            <span class="item-time-stamp">${m.meal_time}</span>
-            <button class="btn-delete-meal" onclick="deleteMealItem(${m.id}, event)">🗑️</button>
-          </div>
-        </div>
-      `).join("");
+        `).join("");
+      }
     }
 
   } catch (err) {
     console.error("Failed loading meals history:", err);
+  }
+}
+
+async function deleteMealItem(mealId, event) {
+  if (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+  if (!confirm("Are you sure you want to delete this logged meal?")) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/meals/${mealId}`, {
+      method: "DELETE"
+    });
+    if (res.ok) {
+      showNotification("Meal record deleted!");
+      loadDashboard(currentSelectedDate);
+      loadHistory(currentHistoryFilter);
+      loadInsights();
+    }
+  } catch (err) {
+    console.error("Failed to delete meal:", err);
   }
 }
 
@@ -974,6 +1030,8 @@ async function triggerFoodScan() {
     showNotification(`Successfully logged: ${data.title}`);
 
     loadDashboard(currentSelectedDate);
+    loadHistory(currentHistoryFilter);
+    loadInsights();
 
     setTimeout(() => {
       closeSnapModal();
@@ -1048,6 +1106,8 @@ async function triggerNaturalLanguageParse() {
     parseBtn.innerHTML = `<span>✓ Meal Saved!</span>`;
     showNotification(`Logged ${data.title} to your day!`);
     loadDashboard(currentSelectedDate);
+    loadHistory(currentHistoryFilter);
+    loadInsights();
 
     setTimeout(() => {
       closeDescribeModal();
