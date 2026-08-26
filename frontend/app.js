@@ -1439,3 +1439,69 @@ function updateProfileUI(user) {
   }
 }
 
+// ----------------- 3D ROTATING DECK CAROUSEL LOGIC -----------------
+let currentDeckIndex = 0;
+let deckAutoRotateTimer = null;
+const DECK_AUTO_ROTATE_INTERVAL = 3500; // Auto-rotates smoothly every 3.5s
+
+function initRotatingDeck() {
+  const container = document.getElementById("intelligence-deck");
+  if (!container) return;
+
+  // Set initial 3D positions
+  rotateDeckTo(0);
+
+  // Start smooth auto-rotation
+  startDeckAutoRotation();
+
+  // Pause when hovered, resume on mouse leave
+  container.addEventListener("mouseenter", stopDeckAutoRotation);
+  container.addEventListener("mouseleave", startDeckAutoRotation);
+}
+
+function startDeckAutoRotation() {
+  stopDeckAutoRotation();
+  deckAutoRotateTimer = setInterval(() => {
+    nextDeckCard();
+  }, DECK_AUTO_ROTATE_INTERVAL);
+}
+
+function stopDeckAutoRotation() {
+  if (deckAutoRotateTimer) {
+    clearInterval(deckAutoRotateTimer);
+    deckAutoRotateTimer = null;
+  }
+}
+
+function rotateDeckTo(targetIndex) {
+  const cards = document.querySelectorAll(".deck-card");
+  const dots = document.querySelectorAll(".deck-dot");
+  if (!cards.length) return;
+
+  const total = cards.length;
+  currentDeckIndex = (targetIndex + total) % total;
+
+  cards.forEach((card, idx) => {
+    card.classList.remove("active", "next", "prev");
+    if (idx === currentDeckIndex) {
+      card.classList.add("active");
+    } else if (idx === (currentDeckIndex + 1) % total) {
+      card.classList.add("next");
+    } else {
+      card.classList.add("prev");
+    }
+  });
+
+  dots.forEach((dot, idx) => {
+    dot.classList.toggle("active", idx === currentDeckIndex);
+  });
+}
+
+function nextDeckCard() {
+  rotateDeckTo(currentDeckIndex + 1);
+}
+
+function prevDeckCard() {
+  rotateDeckTo(currentDeckIndex - 1);
+}
+
