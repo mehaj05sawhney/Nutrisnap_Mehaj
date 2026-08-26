@@ -35,6 +35,9 @@ async function initApp() {
 function navigateTo(viewName) {
   if (viewName === 'landing') {
     document.body.classList.add('on-landing');
+    if (typeof startDeckAutoRotation === 'function') {
+      startDeckAutoRotation();
+    }
   } else {
     document.body.classList.remove('on-landing');
   }
@@ -1442,7 +1445,7 @@ function updateProfileUI(user) {
 // ----------------- 3D ROTATING DECK CAROUSEL LOGIC -----------------
 let currentDeckIndex = 0;
 let deckAutoRotateTimer = null;
-const DECK_AUTO_ROTATE_INTERVAL = 3500; // Auto-rotates smoothly every 3.5s
+const DECK_AUTO_ROTATE_INTERVAL = 3000; // Auto-rotates smoothly every 3 seconds
 
 function initRotatingDeck() {
   const container = document.getElementById("intelligence-deck");
