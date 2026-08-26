@@ -1510,8 +1510,31 @@ function prevDeckCard() {
 
 function scrollToLandingSection(sectionId) {
   const el = document.getElementById(sectionId);
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!el) return;
+
+  const navOffset = 80;
+  const elementPosition = el.getBoundingClientRect().top;
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  const targetTop = elementPosition + currentScroll - navOffset;
+
+  // 1. Smooth scroll window & documentElement
+  window.scrollTo({
+    top: targetTop,
+    behavior: 'smooth'
+  });
+
+  // 2. Smooth scroll main-content wrapper if it's the scroll container
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.scrollTo({
+      top: el.offsetTop - navOffset,
+      behavior: 'smooth'
+    });
   }
+
+  // 3. Standard smooth scrollIntoView
+  try {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {}
 }
 
